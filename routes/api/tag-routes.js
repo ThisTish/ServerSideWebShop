@@ -1,16 +1,47 @@
 const router = require('express').Router();
-const { Tag, Product, ProductTag } = require('../../models');
+const { Tag, Product, ProductTag, Category } = require('../../models');
 
 // The `/api/tags` endpoint
 
 router.get('/', (req, res) => {
-  // find all tags
-  // be sure to include its associated Product data
+  console.log(`Requested: ${JSON.stringify(req.body)}`)
+  Tag.findAll({
+    include:[
+      {
+      model: Product,
+      through: ProductTag,
+      attributes: ['product_name','price','stock']
+      }
+    ]
+  })
+  .then(data =>{
+    console.log(`Data: ${JSON.stringify(data)}`)
+    data.length < 1 ? res.status(404).send('Tags not found') : res.send(data)
+  })
+  .catch (error =>{
+    res.status(500).send({message: error.message || 'Error occured during retrieving tags.'})    
+  });
 });
 
 router.get('/:id', (req, res) => {
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
+  const id = req.params.id;
+  console.log(`Requested: ${JSON.stringify(req.body)}`)
+  Tag.findByPk(id,{
+    include:[
+      {
+      model: Product,
+      through: ProductTag,
+      attributes: ['product_name','price','stock']
+      }
+    ]
+  })
+  .then(data =>{
+    console.log(`Data: ${JSON.stringify(data)}`)
+    data.length < 1 ? res.status(404).send('Tags not found') : res.send(data)
+  })
+  .catch (error =>{
+    res.status(500).send({message: error.message || 'Error occured during retrieving tags.'})    
+  });
 });
 
 router.post('/', (req, res) => {

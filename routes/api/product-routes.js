@@ -5,19 +5,47 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  Product.findAll()
-    .then(data =>{
-      data.length < 1 ? res.status(404).send('Products not found') : res.send(data)
-    })
+  Product.findAll({
+    include:[
+      {
+      model: Category,
+      attributes: ['category_name']
+      },
+      {
+      model: Tag,
+      through: ProductTag,
+      attributes: ['tag_name']
+    }]
+  })
+  .then(data =>{
+    data.length < 1 ? res.status(404).send('Products not found') : res.send(data);
+  })
   .catch (error =>{
-    res.status(500).send({message: error.message || 'Error occured during retrieving products.'})    
+    res.status(500).send({message: error.message || 'Error occured during retrieving products.'}); 
   });
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
-  // be sure to include its associated Category and Tag data
+  const id = req.params.id;
+  Product.findByPk(id,{
+    include:[
+      {
+      model: Category,
+      attributes: ['category_name']
+      },
+      {
+      model: Tag,
+      through: ProductTag,
+      attributes: ['tag_name']
+    }]
+  })
+  .then(data =>{
+    data.length < 1 ? res.status(404).send('Products not found') : res.send(data);
+  })
+  .catch (error =>{
+    res.status(500).send({message: error.message || 'Error occured during retrieving products.'});
+  });
 });
 
 // create new product
