@@ -5,8 +5,13 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  // find all products
-  // be sure to include its associated Category and Tag data
+  Product.findAll()
+    .then(data =>{
+      data.length < 1 ? res.status(404).send('Products not found') : res.send(data)
+    })
+  .catch (error =>{
+    res.status(500).send({message: error.message || 'Error occured during retrieving products.'})    
+  });
 });
 
 // get one product
