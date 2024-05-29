@@ -48,6 +48,34 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  Tag.create(req.body)
+    .then((tag) =>{
+      if(req.body.productIds.length){
+        const tagProductIdArray = req.body.productIds.map((product_id) =>{
+          return{
+            tag_id: tag.id,
+            product_id
+          }
+        })
+        return ProductTag.bulkCreate(tagProductIdArray)
+      }
+      res.status(200).json(tag);
+    })
+    .then((tagProdcutIds) => res.status(200).json(tagProdcutIds))
+    .catch((error) =>{
+      console.log(error)
+      res.status(400).send({message: error.message || 'Error creating tag.'})
+    })
+
+  // *works but without linking to products
+  // try {
+  //   Tag.create({
+  //     tag_name: req.body.tag_name
+  //   })
+  //   res.status(200).json({message: 'Tag created successfully.'});
+  //   } catch (error) {
+  //     res.status(500).send({message: error.message || 'Error occured during creating tag.'});
+  //   }
 });
 
 router.put('/:id', (req, res) => {

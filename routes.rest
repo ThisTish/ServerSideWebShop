@@ -22,7 +22,7 @@ POST http://localhost:3001/api/categories
 Content-Type: application/json
 
 {
-    "category_name": "Food"
+    "category_name": "Movies"
 }
 
 ###
@@ -44,7 +44,9 @@ POST http://localhost:3001/api/tags
 Content-Type: application/json
 
 {
-    "tag_name": "Sports"
+    "tag_name": "wearable",
+    "productIds": [1,2,3]
+
 }
 
 ###
