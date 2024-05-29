@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
       },
       {
       model: Tag,
-      through: ProductTag,
+      through: { attributes: [] },
       attributes: ['tag_name']
     }]
   })
@@ -35,10 +35,12 @@ router.get('/:id', (req, res) => {
       attributes: ['category_name']
       },
       {
-      model: Tag,
-      through: ProductTag,
-      attributes: ['tag_name']
-    }]
+        model: Tag,
+        through: ProductTag,
+        as: 'product_tags',
+        // attributes: ['product_name','price','stock']
+        }
+  ]
   })
   .then(data =>{
     data.length < 1 ? res.status(404).send('Products not found') : res.send(data);
