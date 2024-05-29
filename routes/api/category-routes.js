@@ -27,15 +27,24 @@ router.get('/:id', (req, res) => {
       }]
     })
     .then(data =>{
-      data.length < 1 ? res.status(404).send('Categories not found') : res.send(data);
+      data.length < 1 ? res.status(404).send('Category not found') : res.send(data);
     })
     .catch (error =>{
-      res.status(500).send({message: error.message || 'Error occured during retrieving categories.'});
+      res.status(500).send({message: error.message || 'Error occured during retrieving category.'});
     })
 });
 
 router.post('/', (req, res) => {
   // create a new category
+  try {
+    Category.create({
+      category_name: req.body.category_name
+    })
+    res.status(200).json({message: 'Category created successfully.'});
+  } catch (error) {
+    res.status(500).send({message: error.message || 'Error occured during creating categorie.'});
+
+  }
 });
 
 router.put('/:id', (req, res) => {

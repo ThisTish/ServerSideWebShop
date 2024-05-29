@@ -19,23 +19,33 @@ GET http://localhost:3001/api/tags
 
 
 POST http://localhost:3001/api/categories
+Content-Type: application/json
+
+{
+    "category_name": "Food"
+}
 
 ###
 
-
 POST http://localhost:3001/api/products
+Content-Type: application/json
 
-    {
-    product_name: "Basketball",
-    price: 200.00,
-    stock: 3,
-    tagIds: [1, 2, 3, 4]
-    }
+{
+    "product_name": "Basketball",
+    "price": 200.00,
+    "stock": 3,
+    "tagIds": [1, 2, 3, 4]
+}
 
 ###
 
 
 POST http://localhost:3001/api/tags
+Content-Type: application/json
+
+{
+    "tag_name": "Sports"
+}
 
 ###
 
@@ -54,20 +64,6 @@ GET http://localhost:3001/api/tags/3
 
 ###
 
-
-POST http://localhost:3001/api/categories
-
-###
-
-
-POST http://localhost:3001/api/products/
-
-###
-
-
-POST http://localhost:3001/api/tags/
-
-###
 
 
 PUT http://localhost:3001/api/categories/:id

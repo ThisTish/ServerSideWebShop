@@ -37,8 +37,8 @@ router.get('/:id', (req, res) => {
       {
         model: Tag,
         through: ProductTag,
-        as: 'product_tags',
-        // attributes: ['product_name','price','stock']
+        through:{attributes: []},
+        attributes: ['tag_name']
         }
   ]
   })
@@ -70,7 +70,7 @@ router.post('/', (req, res) => {
             tag_id,
           };
         });
-        return ProductTag.bulkCreate(productTagIdArr);
+          return ProductTag.bulkCreate(productTagIdArr);
       }
       // if no product tags, just respond
       res.status(200).json(product);
