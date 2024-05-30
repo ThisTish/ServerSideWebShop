@@ -36,7 +36,6 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
-  // todo bulkCreate for products
   try {
     Category.create({
       category_name: req.body.category_name
@@ -50,6 +49,15 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
+  try {
+    Category.update(req.body,{
+      where: {id : req.params.id}
+    })
+    res.status(200).json({message: 'Category created successfully.'});
+  } catch (error) {
+    res.status(500).send({message: error.message || 'Error occured during creating category.'});
+
+  }
 });
 
 router.delete('/:id', (req, res) => {
