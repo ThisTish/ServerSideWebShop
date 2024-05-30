@@ -22,7 +22,7 @@ POST http://localhost:3001/api/categories
 Content-Type: application/json
 
 {
-    "category_name": "Movies"
+    "category_name": "Decor"
 }
 
 ###
@@ -44,7 +44,7 @@ POST http://localhost:3001/api/tags
 Content-Type: application/json
 
 {
-    "tag_name": "wearable",
+    "tag_name": "wall art",
     "productIds": [1,2,3]
 
 }
@@ -52,47 +52,54 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:3001/api/categories/9
+GET http://localhost:3001/api/categories/5
 
 ###
 
 
-GET http://localhost:3001/api/products/7
+GET http://localhost:3001/api/products/2
 
 ###
 
 
-GET http://localhost:3001/api/tags/3
+GET http://localhost:3001/api/tags/6
 
 ###
 
 
 
-PUT http://localhost:3001/api/categories/9
+PUT http://localhost:3001/api/categories/5
 Content-Type: application/json
 
 {
-    "category_name":"Toys"
+    "category_name":"Kitchenware"
 }
 
 
 ###
 
 
-PUT http://localhost:3001/api/products/7
+PUT http://localhost:3001/api/products/2
 Content-Type: application/json
 
 {
-    "category_id" : 6,
-    "stock" : 10,
-    "price" : 12,
-    "tagIds" : [10]
+    "product_name":"Futerama DVD",
+    "stock" : 12,
+    "price" : 13,
+    "category_id" : 3,
+    "tagIds" : [4]
 }
 
 ###
 
 
-PUT http://localhost:3001/api/tags/:id
+PUT http://localhost:3001/api/tags/6
+Content-Type: application/json
+# todo you are here. products are not updating. but you got this.
+{
+    "tag_name": "ok/",
+    "productIds":[4]
+}
 
 ###
 
@@ -110,3 +117,7 @@ DELETE  http://localhost:3001/api/products/:id
 DELETE  http://localhost:3001/api/tags/:id
 
 ###
+
+
+# *To test if product-tags connections still exist
+GET  http://localhost:3001/api/product-tags

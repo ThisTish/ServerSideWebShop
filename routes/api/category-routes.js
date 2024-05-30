@@ -53,10 +53,9 @@ router.put('/:id', (req, res) => {
     Category.update(req.body,{
       where: {id : req.params.id}
     })
-    res.status(200).json({message: 'Category created successfully.'});
+    res.status(200).json({message: 'Category updated successfully.'});
   } catch (error) {
     res.status(500).send({message: error.message || 'Error occured during creating category.'});
-
   }
 });
 

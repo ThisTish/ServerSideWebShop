@@ -66,20 +66,46 @@ router.post('/', (req, res) => {
       console.log(error)
       res.status(400).send({message: error.message || 'Error creating tag.'})
     })
-
-  // *works but without linking to products
-  // try {
-  //   Tag.create({
-  //     tag_name: req.body.tag_name
-  //   })
-  //   res.status(200).json({message: 'Tag created successfully.'});
-  //   } catch (error) {
-  //     res.status(500).send({message: error.message || 'Error occured during creating tag.'});
-  //   }
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(req.body,{
+    where: {id : req.params.id}})
+    .then((tag) =>{
+      if(req.body.productIds && req.body.productIds.length){
+        console.log(`product ids? 77 --${req.body.productIds}`)
+          ProductTag.findAll({
+            where: { tag_id : req.params.id}
+          })
+          .then((tagProducts) =>{
+            const tagProductIds = tagProducts.map(({product_id}) => product_id)
+            const newTagProducts = req.body.productIds
+            .filter((product_id) => !tagProductIds.includes(product_id))
+            .map((product_id)=>{
+              return{
+                tag_id: tag.id,
+                product_id
+              }
+            })
+          const oldTagProducts = tagProducts
+          // console.log(`old ids 90${tagProductIds}`)
+          // console.log(`new 91${newTagProducts}`)
+          .filter(({product_id}) => !newTagProducts.includes(product_id))
+          .map(({id}) => id)
+
+          return Promise.all([
+            ProductTag.destroy({where: {id : oldTagProducts}}),
+            ProductTag.bulkCreate(newTagProducts)
+          ])
+        })
+      }
+      res.status(200).json(tag);
+    })
+    .catch((error) =>{
+      console.log(error)
+      res.status(400).send({message: error.message || 'Error updating tag.'})
+    })
 });
 
 router.delete('/:id', (req, res) => {
