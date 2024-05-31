@@ -71,27 +71,28 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
   Tag.update(req.body,{
-    where: {id : req.params.id}})
+    where: {id : req.params.id},
+    returning:true})
     .then((tag) =>{
       if(req.body.productIds && req.body.productIds.length){
-        console.log(`product ids? 77 --${req.body.productIds}`)
           ProductTag.findAll({
             where: { tag_id : req.params.id}
           })
           .then((tagProducts) =>{
+            console.log(`tagProducts: ${tagProducts}`)
             const tagProductIds = tagProducts.map(({product_id}) => product_id)
+            console.log(`tagProductIds ${tagProductIds}`)
+            console.log(`newTagProducts ${req.body.productIds}`)
             const newTagProducts = req.body.productIds
             .filter((product_id) => !tagProductIds.includes(product_id))
             .map((product_id)=>{
-              return{
-                tag_id: tag.id,
+              return {
+                tag_id: req.params.id,
                 product_id
-              }
+            }
             })
           const oldTagProducts = tagProducts
-          // console.log(`old ids 90${tagProductIds}`)
-          // console.log(`new 91${newTagProducts}`)
-          .filter(({product_id}) => !newTagProducts.includes(product_id))
+          .filter(({product_id}) => !req.body.productIds.includes(product_id))
           .map(({id}) => id)
 
           return Promise.all([

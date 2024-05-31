@@ -62,7 +62,7 @@ GET http://localhost:3001/api/products/2
 ###
 
 
-GET http://localhost:3001/api/tags/6
+GET http://localhost:3001/api/tags/4
 
 ###
 
@@ -93,12 +93,12 @@ Content-Type: application/json
 ###
 
 
-PUT http://localhost:3001/api/tags/6
+PUT http://localhost:3001/api/tags/4
 Content-Type: application/json
-# todo you are here. products are not updating. but you got this.
+
 {
-    "tag_name": "ok/",
-    "productIds":[4]
+    "tag_name": "sandwich",
+    "productIds": [5]
 }
 
 ###
