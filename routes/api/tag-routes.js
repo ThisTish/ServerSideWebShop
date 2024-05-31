@@ -111,6 +111,20 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete on tag by its `id` value
+  Tag.destroy({
+    where: {id : req.params.id},
+  })
+  .then((row) =>{
+    if(row === 1){
+      res.status(201).send({message: `Tag destroyed`})
+    }else{
+      res.status(404).send({message: `Tag not found`})
+    }
+  })
+  .catch(error=>{
+    res.status(500).send({message: `Trouble deleting tag--${error}`})
+  })
+  
 });
 
 module.exports = router;
