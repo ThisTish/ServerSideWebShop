@@ -36,16 +36,30 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
-  try {
-    Category.create({
-      category_name: req.body.category_name
+    Category.create(req.body)
+    .then((data) => {
+      let categoryId = data.id
+      // if product ids are provided, update the products with this category
+      if(req.body.products && req.body.products.length > 0){
+        let productIds = req.body.products
+        let updatePromises = productIds.map((productId) => {
+          return Product.update({category_id: categoryId},{
+            where: {
+              id: productId
+            },
+          })
+        })
+        return Promise.all(productIds)
+        .then(()=>{
+          res.status(201).send({message: 'Category created successfully.'});
+        })
+      }
+      res.status(201).send({message: 'Category created successfully.'});
     })
-    res.status(200).json({message: 'Category created successfully.'});
-  } catch (error) {
-    res.status(500).send({message: error.message || 'Error occured during creating category.'});
-
-  }
-});
+    .catch ((error) => {
+      res.status(500).send({message: error.message || 'Error occured during creating category.'});
+    })
+  })
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value

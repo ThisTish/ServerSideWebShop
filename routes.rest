@@ -22,7 +22,8 @@ POST http://localhost:3001/api/categories
 Content-Type: application/json
 
 {
-    "category_name": "Decor"
+    "category_name": "Sunshine",
+    "products": [5]
 }
 
 ###
