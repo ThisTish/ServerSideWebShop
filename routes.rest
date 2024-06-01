@@ -109,7 +109,7 @@ DELETE  http://localhost:3001/api/categories/1
 ###
 
 
-DELETE  http://localhost:3001/api/products/:id
+DELETE  http://localhost:3001/api/products/6
 
 ###
 

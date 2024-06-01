@@ -129,6 +129,19 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {id: req.params.id}
+  })
+  .then((row) =>{
+    if(row === 1){
+      res.status(201).send({message: `Product ${req.params.id} destroyed`})
+    }else{
+      res.status(404).send({message: `Tag not found`})
+    }
+  })
+  .catch(error=>{
+    res.status(500).send({message: `Trouble deleting tag--${error}`})
+  })
 });
 
 module.exports = router;
