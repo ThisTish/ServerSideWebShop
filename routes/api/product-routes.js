@@ -39,14 +39,14 @@ router.get('/:id', (req, res) => {
         through: ProductTag,
         through:{attributes: []},
         attributes: ['tag_name']
-        }
-  ]
+      }
+    ]
   })
-  .then(data =>{
-    data.length < 1 ? res.status(404).send('Products not found') : res.send(data);
+  .then((data) =>{
+    !data ? res.status(404).send('Product not found') : res.send(data)
   })
   .catch (error =>{
-    res.status(500).send({message: error.message || 'Error occured during retrieving products.'});
+    res.status(500).send({message: error.message || 'Error occured during retrieving product.'});
   });
 });
 
@@ -91,7 +91,7 @@ router.put('/:id', (req, res) => {
     },
   })
     .then((product) => {
-      if (req.body.tagIds && req.body.tagIds.length) {
+      if (req.body.tagIds && req.body.tagIds.length > 0) {
         
         ProductTag.findAll({
           where: { product_id: req.params.id }
@@ -118,11 +118,9 @@ router.put('/:id', (req, res) => {
           ]);
         });
       }
-
       return res.json(product);
     })
     .catch((err) => {
-      // console.log(err);
       res.status(400).json(err);
     });
 });
@@ -134,13 +132,13 @@ router.delete('/:id', (req, res) => {
   })
   .then((row) =>{
     if(row === 1){
-      res.status(201).send({message: `Product ${req.params.id} destroyed`})
+      res.status(200).send({message: `Product ${req.params.id} destroyed`})
     }else{
-      res.status(404).send({message: `Tag not found`})
+      res.status(404).send({message: `Product not found`})
     }
   })
   .catch(error=>{
-    res.status(500).send({message: `Trouble deleting tag--${error}`})
+    res.status(500).send({message: error.message || `Error occured during deleting product.`})
   })
 });
 

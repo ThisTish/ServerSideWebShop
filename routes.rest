@@ -22,8 +22,8 @@ POST http://localhost:3001/api/categories
 Content-Type: application/json
 
 {
-    "category_name": "Sunshine",
-    "products": [3]
+    "category_name": "Sports",
+    "products": [6]
 }
 
 ###
@@ -45,8 +45,8 @@ POST http://localhost:3001/api/tags
 Content-Type: application/json
 
 {
-    "tag_name": "wall art",
-    "productIds": [1,2,3]
+    "tag_name": "clothes",
+    "productIds": [1,2,3,5]
 
 }
 
@@ -69,12 +69,12 @@ GET http://localhost:3001/api/tags/4
 
 
 
-PUT http://localhost:3001/api/categories/6
+PUT http://localhost:3001/api/categories/2
 Content-Type: application/json
 
 {
-    "category_name":"Kitchenware",
-    "products" : [1, 2]
+    "category_name":"Pants",
+    "products" : [5]
 }
 
 
@@ -95,7 +95,7 @@ Content-Type: application/json
 ###
 
 
-PUT http://localhost:3001/api/tags/4
+PUT http://localhost:3001/api/tags/1
 Content-Type: application/json
 
 {
@@ -106,7 +106,7 @@ Content-Type: application/json
 ###
 
 
-DELETE  http://localhost:3001/api/categories/1
+DELETE  http://localhost:3001/api/categories/4
 
 ###
 

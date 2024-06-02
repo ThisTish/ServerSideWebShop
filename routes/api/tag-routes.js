@@ -3,20 +3,17 @@ const { Tag, Product, ProductTag, Category } = require('../../models');
 
 // The `/api/tags` endpoint
 
+// get all tags
 router.get('/', (req, res) => {
-  console.log(`Requested: ${JSON.stringify(req.body)}`)
   Tag.findAll({
-    include:[
-      {
+    include:[{
       model: Product,
       through: ProductTag,
       through:{attributes: []},
       attributes: ['product_name', 'price', 'stock']
-      }
-    ]
+      }]
   })
   .then(data =>{
-    console.log(`Data: ${JSON.stringify(data)}`)
     data.length < 1 ? res.status(404).send('Tags not found') : res.send(data)
   })
   .catch (error =>{
@@ -24,30 +21,27 @@ router.get('/', (req, res) => {
   });
 });
 
+// get specific tag
 router.get('/:id', (req, res) => {
   const id = req.params.id;
-  console.log(`Requested: ${JSON.stringify(req.body)}`)
   Tag.findByPk(id,{
-    include:[
-      {
+    include:[{
       model: Product,
       through: ProductTag,
       through:{attributes: []},
       attributes: ['product_name','price','stock']
-      }
-    ]
+      }]
   })
   .then(data =>{
-    console.log(`Data: ${JSON.stringify(data)}`)
-    data.length < 1 ? res.status(404).send('Tags not found') : res.send(data)
+    data.length < 1 ? res.status(404).send('Tag not found') : res.send(data)
   })
   .catch (error =>{
-    res.status(500).send({message: error.message || 'Error occured during retrieving tags.'})    
+    res.status(500).send({message: error.message || 'Error occured during retrieving tag.'})    
   });
 });
 
+// create a new tag
 router.post('/', (req, res) => {
-  // create a new tag
   Tag.create(req.body)
     .then((tag) =>{
       if(req.body.productIds.length){
@@ -59,30 +53,30 @@ router.post('/', (req, res) => {
         })
         return ProductTag.bulkCreate(tagProductIdArray)
       }
-      res.status(200).json(tag);
+      res.status(201).json(tag);
     })
-    .then((tagProdcutIds) => res.status(200).json(tagProdcutIds))
+    .then((tagProdcutIds) => res.status(201).json(tagProdcutIds))
     .catch((error) =>{
       console.log(error)
       res.status(400).send({message: error.message || 'Error creating tag.'})
     })
 });
 
+// update a tag's name by its `id` value
 router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
   Tag.update(req.body,{
     where: {id : req.params.id},
     returning:true})
+
     .then((tag) =>{
+      // update product if provided in body
       if(req.body.productIds && req.body.productIds.length){
           ProductTag.findAll({
             where: { tag_id : req.params.id}
           })
+
           .then((tagProducts) =>{
-            console.log(`tagProducts: ${tagProducts}`)
             const tagProductIds = tagProducts.map(({product_id}) => product_id)
-            console.log(`tagProductIds ${tagProductIds}`)
-            console.log(`newTagProducts ${req.body.productIds}`)
             const newTagProducts = req.body.productIds
             .filter((product_id) => !tagProductIds.includes(product_id))
             .map((product_id)=>{
@@ -101,22 +95,21 @@ router.put('/:id', (req, res) => {
           ])
         })
       }
-      res.status(200).json(tag);
+      return res.json(tag);
     })
     .catch((error) =>{
-      console.log(error)
       res.status(400).send({message: error.message || 'Error updating tag.'})
     })
 });
 
+// delete on tag by its `id` value
 router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
   Tag.destroy({
     where: {id : req.params.id},
   })
   .then((row) =>{
     if(row === 1){
-      res.status(201).send({message: `Tag destroyed`})
+      res.status(200).send({message: `Tag destroyed`})
     }else{
       res.status(404).send({message: `Tag not found`})
     }
@@ -124,7 +117,6 @@ router.delete('/:id', (req, res) => {
   .catch(error=>{
     res.status(500).send({message: `Trouble deleting tag--${error}`})
   })
-  
 });
 
 module.exports = router;
