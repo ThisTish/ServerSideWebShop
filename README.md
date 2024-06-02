@@ -12,6 +12,7 @@ The backend of an e-commerce website for database services.
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Acknowledgments](#acknowledgments)
 - [Contributing](#contributing)
 - [Tests](#tests)
 - [Questions](#questions)
@@ -42,6 +43,19 @@ Clone the repository code [from here](https://github.com/ThisTish/ServerSideWebS
 
 
 This API provides endpoints to perform CRUD (Create, Read, Update, Delete) operations on three tables in the database: Categories, Tags, and Products. Testing this through Insomnia or another API testing tool is possible and testing files are provided. More information in [Tests](#tests)
+
+
+## 📢 Acknowledgments <a id="acknowledgments"></a>
+
+
+This project was made possible thanks to the following libraries and tools:
+
+- [Express](https://www.npmjs.com/package/express): Fast, unopinionated, minimalist web framework for Node.js.
+- [pg](https://www.npmjs.com/package/pg): Non-blocking PostgreSQL client for Node.js.
+- [Sequelize](https://www.npmjs.com/package/sequelize): A promise-based Node.js ORM for Postgres, MySQL, MariaDB, SQLite, and Microsoft SQL Server.
+- [dotenv](https://www.npmjs.com/package/dotenv): Loads environment variables from a `.env` file into `process.env`.
+- [nodemon](https://www.npmjs.com/package/nodemon): Automatically restarts the Node.js application when file changes are detected.
+- [@types/dotenv](https://www.npmjs.com/package/@types/dotenv): TypeScript type definitions for the `dotenv` library.
 
 ## 🌐 Contributing <a id="contributing"></a>
 

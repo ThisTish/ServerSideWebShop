@@ -1,4 +1,5 @@
 # route testing with REST Client extension in VS Code.
+# Extension ID: humao.rest-client
 
 ###
 
