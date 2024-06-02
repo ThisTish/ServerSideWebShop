@@ -23,7 +23,7 @@ Content-Type: application/json
 
 {
     "category_name": "Sunshine",
-    "products": [5]
+    "products": [3]
 }
 
 ###
@@ -53,7 +53,7 @@ Content-Type: application/json
 ###
 
 
-GET http://localhost:3001/api/categories/5
+GET http://localhost:3001/api/categories/6
 
 ###
 
@@ -69,11 +69,12 @@ GET http://localhost:3001/api/tags/4
 
 
 
-PUT http://localhost:3001/api/categories/5
+PUT http://localhost:3001/api/categories/6
 Content-Type: application/json
 
 {
-    "category_name":"Kitchenware"
+    "category_name":"Kitchenware",
+    "products" : [1, 2]
 }
 
 

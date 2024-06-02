@@ -38,23 +38,26 @@ router.post('/', (req, res) => {
   // create a new category
     Category.create(req.body)
     .then((data) => {
-      let categoryId = data.id
+      const categoryId = data.id
+      console.log(`Category ${req.body.category_name} created!`)
       // if product ids are provided, update the products with this category
       if(req.body.products && req.body.products.length > 0){
-        let productIds = req.body.products
+        const productIds = req.body.products
         let updatePromises = productIds.map((productId) => {
           return Product.update({category_id: categoryId},{
             where: {
               id: productId
             },
+            returning: true
           })
         })
-        return Promise.all(productIds)
+        return Promise.all(updatePromises)
         .then(()=>{
-          res.status(201).send({message: 'Category created successfully.'});
+          res.status(201).send({message: 'Category created with product(s) successfully.'});
         })
+      }else{
+        res.status(201).send({message: 'Category created successfully.'});
       }
-      res.status(201).send({message: 'Category created successfully.'});
     })
     .catch ((error) => {
       res.status(500).send({message: error.message || 'Error occured during creating category.'});
@@ -63,15 +66,37 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  try {
     Category.update(req.body,{
-      where: {id : req.params.id}
+      where: {id : req.params.id},
+      returning: true
     })
-    res.status(200).json({message: 'Category updated successfully.'});
-  } catch (error) {
-    res.status(500).send({message: error.message || 'Error occured during creating category.'});
-  }
-});
+    .then(([rows]) => {
+      if (rows === 0) {
+        throw new Error('Category not found');
+      }
+
+      if(req.body.products && req.body.products.length > 0){
+        const productIds = req.body.products
+        let updatePromises = productIds.map((productId) => {
+          return Product.update({category_id: req.params.id},{
+            where: {
+              id: productId
+            },
+            returning: true
+          })
+        })
+        return Promise.all(updatePromises)
+        .then(()=>{
+          res.status(200).send({message: 'Category updasted with product(s) successfully.'});
+        })
+      }else{
+        res.status(200).send({message: 'Category updated successfully.'});
+      }
+    })
+    .catch ((error) => {
+      res.status(500).send({message: error.message || 'Error occured during updating category.'});
+    })
+    })
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
