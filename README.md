@@ -44,6 +44,10 @@ Clone the repository code [from here](https://github.com/ThisTish/ServerSideWebS
 
 This API provides endpoints to perform CRUD (Create, Read, Update, Delete) operations on three tables in the database: Categories, Tags, and Products. Testing this through Insomnia or another API testing tool is possible and testing files are provided. More information in [Tests](#tests)
 
+### Walkthrough
+
+-[Video walkthrough for testing the API routing](https://drive.google.com/file/d/1bJdVwwWSl0zqIImnS4T5B_W5ntAk2XsF/view)
+
 
 ## 📢 Acknowledgments <a id="acknowledgments"></a>
 
